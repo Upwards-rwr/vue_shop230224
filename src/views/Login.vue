@@ -1,5 +1,6 @@
 <template>
     <div class="login_container">
+ 
         <div class="login_box">
             <div class="login_tou">
                 <img src="./../assets/image/0.png" alt="">
@@ -51,7 +52,8 @@ export default{
                 this.$refs.form.validate(async(valid) => {
                 if (valid) {
                     //发送请求
-                    const {data:res} = await this.$http.post("/login",this.form)
+                    const {data: res} = await this.$http.post("/login",this.form)
+                    console.log(res)
                     if(res.meta.status !== 200){
                         this.$message({
                             message: '登录失败',

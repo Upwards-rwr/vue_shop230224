@@ -7,7 +7,7 @@ const router = new Router({
             path:"/login",
             name:"login",
             // meta:{bread:["订单管理","所有订单"]},
-            component:()=>import("./components/Login.vue")
+            component:()=>import("./../views/Login.vue")
         },
         {
            path:"/" ,
@@ -16,8 +16,16 @@ const router = new Router({
         {
             path:"/home",
             name:"home",
+            redirect:'/welcome',
             // meta:{bread:["订单管理","所有订单"]},
-            component:()=>import("./components/Home.vue")
+            component:()=>import("./../views/Home.vue"),
+            children:[
+                {
+                    path:'/welcome',
+                    component:()=>import("./../views/Welcome.vue"),
+                    
+                }
+            ]
         },
     ]
 })
