@@ -1,7 +1,6 @@
 <template>
     <div class="viewContain">
     <el-container>
-        <div @mouseover="saveNavState">你好</div>
         <el-header>
             <div class="headImg">
                 <img src="./../assets/image/0.png" alt="">
@@ -14,6 +13,7 @@
                 <nav-Left v-on:toggleCollapse="isCollapse"   ></nav-Left>
             </el-aside>
             <el-main>
+                <bread-crumb></bread-crumb>
                 <router-view></router-view>
             </el-main>
         </el-container>
@@ -22,7 +22,7 @@
 </template>
 <script>
 import NavLeft from "@/components/nav.vue"
-// import NavLeft from "@/components/navLeft.vue"
+import breadCrumb from "@/components/breadCrumb.vue"
 export default {
 data(){
     return {
@@ -31,6 +31,7 @@ data(){
 },
 components: {
     NavLeft,
+    breadCrumb
 },
 created(){
     // this.isCollapse()
@@ -40,14 +41,10 @@ methods:{
         // console.log(data)
        this.Collapse=data
     },
-      logout(){
+    logout(){
           window.sessionStorage.clear();
           this.$router.push("/login")
-      },
-    saveNavState(data){
-        console.log(data)
-    }
-      //
+    },
       
 },
 
