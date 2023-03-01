@@ -11,7 +11,7 @@
                 </el-col>
                 <el-col :span="4">
                     <div>
-                        <el-button type="primary">添加用户</el-button>
+                        <el-button type="primary" @click="addUser">添加用户</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -29,8 +29,8 @@
                     </el-table-column>
                     <el-table-column  label="操作" width="180px">
                         <template slot-scope="scope">
-                            <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                            <el-button type="primary" icon="el-icon-edit" size="mini" @click="reviseUser(scope.row)"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUser(scope.row.id)"></el-button>
                             <el-tooltip class="item" effect="dark" content="分配角色" :enterable="false">
                                 <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
                             </el-tooltip>
@@ -53,6 +53,7 @@
     </div>
 </template>
 <script>
+import pubsub from 'pubsub-js'
 import myDialog from './Dialog.vue'
 export default {
    data(){
@@ -103,7 +104,35 @@ export default {
                return this.$message.error('更新用户状态失败！')
            }
            this.$message.success('更新用户状态成功')
+       },
+       //点击添加用户事件
+       addUser(){
+           //发送添加用户的信号
+           pubsub.publish('addUser','添加用户')
+       },
+       //点击修改用户
+       reviseUser(row){
+           //发送添加用户的信号
+           pubsub.publish('reviseUser',{
+               titie:'修改用户',
+               row:row
+           })
+       },
+       //delete删除用户
+       async deleteUser(id){
+            const {data: res} = await this.$http.delete("/goods/:id",{params:this.queryInfo})
+            if(res.meta.status !== 200) return this.$message.error('获取用户列表失败')
+            
        }
+   },
+   mounted(){
+       //接受ensure修改和添加用户成功事件
+       this.$bus.$on('ensure',(data)=>{
+           if(data) {
+                 console.log(data)
+               this.getUserListData()
+           }
+       })
    }
 }
 </script>
